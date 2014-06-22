@@ -1,7 +1,7 @@
 library(plyr)
 
 # Read features.txt
-features <- read.table('features.txt', col.names = c('SrNo', 'feature'))
+features <- read.table('uci/features.txt', col.names = c('SrNo', 'feature'))
 
 # Read test data
 raw.test.data <- read.table('uci/test/X_test.txt',
@@ -53,8 +53,8 @@ raw.data$activity = mapvalues(raw.data$activity,
                               )
 
 # Extract required columns from merged data
-cols.mean <- grep("mean", features$feature)
-cols.std <- grep("std", features$feature)
+cols.mean <- grep("mean\\(", features$feature)
+cols.std <- grep("std\\(", features$feature)
 cols.req <- c(cols.mean, cols.std)
 cols.req <- sort(cols.req)
 
@@ -62,5 +62,9 @@ cols.req <- sort(cols.req)
 tidy.data.1 <- raw.data[, cols.req]
 
 # Write tidy data 1
-write.table(tidy.data.1, file="tidy_data.txt", col.names = FALSE, row.names = FALSE)
+write.table(tidy.data.1,
+            file="tidy_data.txt",
+            col.names = FALSE,
+            row.names = FALSE)
 
+# Create
