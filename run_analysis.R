@@ -1,5 +1,5 @@
 library(plyr)
-library(reshape)
+library(reshape2)
 
 # Read features.txt
 features <- read.table('uci/features.txt', col.names = c('SrNo', 'feature'))
@@ -70,24 +70,17 @@ colnames(tidy.data.1) <- c("subject.id", "activity", tidy.col.names)
 
 # Write tidy data 1
 write.table(tidy.data.1,
-            file="tidy_data.txt",
+            file="tidy_data_1.txt",
             quote = FALSE,
             col.names = TRUE,
             row.names = FALSE)
-
-req.features <- features[cols.req,]
-write.table(req.features$feature,
-            file='features.tidy_data.txt',
-            quote = FALSE,
-            col.names = FALSE,
-            row.names = TRUE)
 
 # Create second tidy dataset
 # Melting the raw.data
 md <- melt(raw.data, id = c("activity", "subject.id"))
 
 # Cast the melted data
-tidy.data.2 <- cast(md, activity+subject.id~variable, mean)
+tidy.data.2 <- dcast(md, activity+subject.id~variable, mean)
 
 # Naming the columns appropriately
 full.col.names <- make.names(gsub("\\(\\)", "", features$feature))
